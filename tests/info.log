@@ -1,0 +1,6 @@
+2017-06-19 18:04:04,369 - pdsutil.DbUtil - INFO - connecting to sqlite3
+2017-06-19 18:04:04,370 - pdsutil.DbUtil - INFO - connecting to sqlite3_mem
+2017-06-19 18:04:04,373 - pdsutil.DbUtil - INFO - connecting to sqlite3
+2017-06-19 18:04:04,377 - pdsutil.DbUtil - INFO - connecting to sqlite3_mem
+2017-06-22 10:02:26,601 - pdsutil.DuplicateFiles3 - INFO - hashing /common/home/jjs/python_projects/pdsutil/tests/resources/connections.yaml
+2017-06-22 10:02:26,632 - pdsutil.DuplicateFiles3 - INFO - hashing /common/home/jjs/python_projects/pdsutil/tests/resources/connections.yaml

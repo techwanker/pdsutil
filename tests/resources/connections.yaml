@@ -1,0 +1,9 @@
+"sqlite3":
+    url: "sqlite:/tmp/test.db"
+    sql:
+        - "select 'wtf'"
+
+"sqlite3_mem":
+    url: "sqlite::memory:"
+    sql:
+        - "PRAGMA foreign_keys = ON"

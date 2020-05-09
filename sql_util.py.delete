@@ -1,0 +1,83 @@
+import datetime
+import decimal
+from collections import OrderedDict
+
+DIALECT_POSTGRES = "postgres"
+
+import re
+
+#TODO isn't this part of DbUtil now?
+
+def find_binds(sql):
+    retval = set()
+    regex = "%\(([^)]*)\)s"
+    matches = re.findall(regex, sql)
+
+    for match in matches:
+        retval.add(match)
+    return retval
+
+def to_colon_binds(sql):
+    binds = find_binds(sql)
+
+    new_sql = sql
+    for bind in binds:
+        print(bind)
+        python_bind = str("%(" + bind + ")s")
+        colon_bind = str(":" + bind)
+        new_sql = new_sql.replace(python_bind, colon_bind)  # .replace(pattern,repl)re.sub(pattern, repl, new_sql)
+        print(new_sql)
+        return new_sql
+
+
+
+
+class DdlUtil:
+    DIALECT_POSTGRES = "postgres"
+
+    def __init__(self, dialect):
+        raise Exception("use Dbutil DdlUtil")
+        self.dialect = dialect
+
+    def get_create_table(self, table_name, column_defs):
+        """
+
+        :param table_name:
+        :param column_names_datatype: should be OrderedDict
+        :return:
+        """
+        sql = "create table %s (\n" % table_name
+        comma = ""
+        for column_def in column_defs:
+            sql += comma
+            col_type = column_def.get_column_type(self.dialect)
+            sql += "   %s %s" % (column_def.column_name, col_type)
+            if column_def.not_null:
+                sql += " not null"
+
+            comma = ",\n"
+        sql += "\n)"
+        return sql
+
+    def get_insert(self, table_name, column_defs):
+        """
+
+        :param table_name:
+        :param column_defs:
+        :return:
+        """
+        sql = "insert into %s (\n" % table_name
+        comma = ""
+        for column_def in column_defs:
+            sql += comma
+            sql += "   %s " % (column_def.column_name)
+            comma = ",\n"
+        sql += ") values (\n"
+        comma = ""
+        for column_def in column_defs:
+            sql += comma
+            sql += "   :" + (column_def.column_name)
+            # sql += "   %("  + (column_def.column_name) + ")s"
+            comma = ",\n"
+        sql += "\n)"
+        return sql

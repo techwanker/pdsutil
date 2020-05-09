@@ -1,0 +1,17 @@
+def lpad(string, length, padchar):
+    raise Exception("just use str.rjust(length,padchar")
+    # TODO should just user rjust
+    retval = ""
+    for i in range(0, length - len(string)):
+        retval += padchar
+    retval += string
+    return retval
+
+
+def rpad(string, length, padchar):
+    raise Exception("just use str.ljust(length,padchar")
+    # TODO should just use ljust
+    retval = string
+    for i in range(0, length - len(string)):
+        retval += padchar
+    return retval

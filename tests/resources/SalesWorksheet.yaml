@@ -1,0 +1,14 @@
+"sales_workbook":
+-  sheet_name: "sales"
+   sql: >
+          select *
+          from etl_cust_product_month_view
+          where sum_cases_shipped > 0
+   pivot:
+       columns:
+          - "ship_month"
+       values:
+          - 'sum_cases_shipped'
+       index:
+          - 'ship_to_cust_id'
+          - 'product_descr'

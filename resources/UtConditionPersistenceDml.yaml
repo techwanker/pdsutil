@@ -1,0 +1,71 @@
+ut_condition_select:
+    sql: >
+          select ut_condition_id
+          from ut_condition
+          where
+              condition_name          = %(rule_name)s and
+              table_name              = %(table_name)s and
+              condition_msg           = %(msg)s and
+              sql_text                = %(sql_text)s and
+              (narrative              = %(narrative)s or
+               narrative is null and %(narrative)s is null) and
+              condition_severity      = %(severity)s and
+              condition_format_str    = %(format_str)s
+ut_condition_insert:
+    sql: >
+          insert into ut_condition (
+              condition_name,
+              table_name,
+              condition_msg,
+              sql_text,
+              narrative,
+              condition_severity,
+              condition_format_str
+          ) values (
+              %(rule_name)s,
+              %(table_name)s,
+              %(msg)s,
+              %(sql_text)s,
+              %(narrative)s,
+              %(severity)s,
+              %(format_str)s
+          )
+    returning: ut_condition_id
+ut_condition_run_insert:
+     sql: >
+          insert into ut_condition_run (
+              start_ts
+          ) values (
+            %(start_ts)s
+          )
+     returning: ut_condition_run_id
+ut_condition_run_parm_insert:
+     sql: >
+          insert into ut_condition_run_parm (
+              ut_condition_run_id, parm_nm, parm_type, parm_value_str
+          ) values (
+             %(UT_CONDITION_RUN_ID)s, %(PARM_NM)s, %(PARM_TYPE)s, %(PARM_VALUE)s
+          )
+ut_condition_run_step_insert:
+     sql: >
+          insert into ut_condition_run_step (
+              ut_condition_id,
+              ut_condition_run_id,
+              start_ts
+          ) values (
+              %(UT_CONDITION_ID)s,
+              %(UT_CONDITION_RUN_ID)s,
+              %(START_TS)s
+          )
+     returning: ut_condition_run_step_id
+ut_condition_row_msg_insert:
+     sql: >
+          insert into ut_condition_row_msg (
+                 ut_condition_run_step_id, 
+                 table_pk,
+                 condition_msg
+             ) values (
+                 %(UT_CONDITION_RUN_STEP_ID)s, %(PRIMARY_KEY)s, 
+                 %(MSG)s
+             )
+

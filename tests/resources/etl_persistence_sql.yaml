@@ -1,0 +1,82 @@
+etl_customer_insert:
+  sql: >
+    insert into ETL_CUSTOMER (
+      ETL_FILE_ID, LINE_NUMBER, SHIP_TO_CUST_ID, CUST_NM,
+      ADDR_1, ADDR_2, CITY, STATE,
+      POSTAL_CD, TEL_NBR, NATIONAL_ACCT_ID,
+      SPECIAL_FLG
+    ) values (
+      %(ETL_FILE_ID)s, %(LINE_NUMBER)s, %(SHIP_TO_CUST_ID)s, %(CUST_NM)s,
+      %(ADDR_1)s, %(ADDR_2)s, %(CITY)s, %(STATE)s,
+      %(POSTAL_CD)s, %(TEL_NBR)s, %(NATIONAL_ACCT_ID)s,
+      %(SPECIAL_FLG)s
+    )
+etl_file_initial_insert:
+  sql: >
+    insert into ETL_FILE ( RPT_ORG_ID, DATAFEED_ORG_ID)
+    select org_id, org_id
+    from org
+    where org_cd = %(ORG_CD)s
+  returning: "returning etl_file_id"
+org_select:
+  sql: >
+    select org_id from org where org_cd = %(ORG_CD)s
+etl_sale_tot_insert:
+  sql: >
+     insert into etl_sale_tot (
+         ETL_FILE_ID, LINE_NUMBER
+         SALES_START_DT,
+         SALES_END_DT,
+         FILE_CREATE_DT, SALES_REC_CNT, SUM_EXT_NET_AMT
+     ) values (
+         %(ETL_FILE_ID)s, %(LINE_NUMBER)s
+         %(SALES_START_DT)s,
+         %(SALES_END_DT)s, %(FILE_CREATE_DT)s, %(SALES_REC_CNT)s,
+         %(SUM_EXT_NET_AMT)s
+     )
+etl_inventory_insert:
+  sql: >
+    insert into ETL_INVENTORY (
+        ETL_FILE_ID, LINE_NUMBER,
+         DISTRIBUTOR_ID, MFR_ID,
+        MFR_PRODUCT_ID, COMMENTS, CASES,
+        BOXES, UNITS, CASE_GTIN
+    ) values (
+        %(ETL_FILE_ID)s, %(LINE_NUMBER),
+        %(DISTRIBUTOR_ID)s, %(MFR_ID)s,
+        %(MFR_PRODUCT_ID)s, %(COMMENTS)s, %(CASES)s,
+        %(BOXES)s, %(UNITS)s, %(CASE_GTIN)s
+    )
+etl_inventory_tot_insert:
+  sql: >
+    insert into ETL_INVENTORY_TOT (
+        ETL_FILE_ID, line_number,
+        INVENTORY_DT, FILE_CREATION_DT, RECORD_CNT_REPORTED
+    ) values (
+        %(ETL_FILE_ID)s, %(LINE_NUMBER)s,
+        %(INVENTORY_DT)s, %(FILE_CREATION_DT)s, %(RECORD_CNT_REPORTED)s
+    )
+etl_sale_insert:
+  sql: >
+      insert into ETL_SALE (
+          ETL_FILE_ID,
+          LINE_NUMBER,
+          DISTRIB_ID, MFR_ID,
+          MFR_PRODUCT_ID, SHIP_TO_CUST_ID, INVOICE_CD, INVOICE_DT,
+          SHIP_DT, EXTENDED_NET_AMT,
+          DISTRIB_PRODUCT_REF,
+          PRODUCT_DESCR, CASES_SHIPPED, BOXES_SHIPPED, UNITS_SHIPPED,
+          CASE_GTIN
+      ) values (
+          %(ETL_FILE_ID)s, %(LINE_NUMBER)s,
+          %(DISTRIB_ID)s, %(MFR_ID)s,
+          %(MFR_PRODUCT_ID)s, %(SHIP_TO_CUST_ID)s, %(INVOICE_CD)s, %(INVOICE_DT)s,
+          %(SHIP_DT)s, %(EXTENDED_NET_AMT)s,
+          %(DISTRIB_PRODUCT_REF)s,
+          %(PRODUCT_DESCR)s, %(CASES_SHIPPED)s, %(BOXES_SHIPPED)s, %(UNITS_SHIPPED)s,
+          %(CASE_GTIN)s
+      )
+etl_customer_tot_insert:
+  sql: >
+    insert into etl_customer_tot( etl_file_id, line_number customer_count)
+    values ( %(ETL_FILE_ID)s, %(LINE_NUMBER)s, %(CUSTOMER_COUNT)s
