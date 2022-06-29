@@ -41,7 +41,7 @@
     <junit.version>4.12</junit.version>
     <supercsv.version>2.4.0</supercsv.version>
     <commons-math3.version>3.6.1</commons-math3.version>
-    <poi.version>3.15</poi.version>
+    <poi.version>4.1.1</poi.version>
     <aspectj.version>1.8.2</aspectj.version>
     <metrics.version>3.1.2</metrics.version>
     <xchart.version>2.5.1</xchart.version>
